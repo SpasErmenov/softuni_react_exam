@@ -4,8 +4,8 @@ const authService = require('../services/authService');
 const { isAuth } = require('../middlewares/authMiddleware')
 const { getErrorMessage } = require('../utils/errorUtils');
 
-router.get('/login', (req, res) => {
-    res.render('auth/login');
+router.get('/', (req, res) => {
+    res.send('This is Home page!');
 });
 
 router.post('/login', async (req, res) => {
@@ -17,18 +17,18 @@ router.post('/login', async (req, res) => {
         res.cookie('auth', token);
         res.redirect('/');
     } catch (error) {
-        return res.status(404).render('auth/login', { error: getErrorMessage(error) });
+        return res.status(404).redirect('/login', { error: getErrorMessage(error) });
     }
 
 })
 
 router.get('/register', (req, res) => {
-    res.render('auth/register');
+    res.send('This is register page!');
 })
 
 router.post('/register', async (req, res) => {
     const { username, email, password, repeatPassword } = req.body;
-    console.log(req.body);
+    
     try {
         const token = await authService.register(username, email, password, repeatPassword);
 
